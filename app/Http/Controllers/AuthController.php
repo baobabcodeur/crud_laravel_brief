@@ -9,7 +9,9 @@ use App\Http\Requests\RegistrationRequest;
 use App\Interfaces\AuthenticationInterface;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
+use function PHPUnit\Framework\returnSelf;
 
 class AuthController extends Controller
 {
@@ -22,34 +24,47 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+       
         $data = [
             'email' => $request->email,
-            'password' => $request->email,
+            'password' => $request->password,
         ];
+       
         try {
+
+            
             if ($this->authInterface->login($data))
                 return redirect()->route('home');
             else
                 return back()->with('error', 'Email ou mot de passe incorrect(s).');
         } catch (\Exception $ex) {
+           
             return back()->with('error', 'une erreur est survnue lors du traitement, Réessayez !');
         }
     }
 
     public function registration(RegistrationRequest $request)
     {
+        $password = Str::random(10);
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->email,
+            'password' => $password,
         ];
 
+
+       
+
+
         try {
+            
             $user = $this->authInterface->registration($data);
+
             Auth::login($user);
 
-            return redirect()->route('home');
+            return redirect()->route('dashboard');
         } catch (\Exception $ex) {
+           
             return back()->with('error', 'une erreur est survnue lors du traitement, Réessayez !');
         }
     }

@@ -20,7 +20,9 @@
         Se déconnecter
     </a>
 </div>
-   
+   <div>
+    <button><a href="{{ route('dashboard') }}"> Dashboard</a></button>
+   </div>
 </body>
 
 </html>

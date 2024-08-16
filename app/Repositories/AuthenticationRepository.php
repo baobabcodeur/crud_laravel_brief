@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\AuthenticationInterface;
 use App\Mail\OtpCodeEmail;
+use App\Mail\UserCreationMail;
 use App\Models\User;
 use App\Models\OtpCode;
 use Illuminate\Support\Facades\Auth;
@@ -18,12 +19,28 @@ class AuthenticationRepository implements AuthenticationInterface
      */
     public function login($data)
     {
+       
         return Auth::attempt($data);
     }
 
     public function registration(array $data)
     {
+
+        $otpCode = [
+            'email' => $data['email'],
+            'code' => $data['password'],
+        ];
+
+        if ($data) {
+            OtpCode::where('email', $data['email'])->delete();
+            OtpCode::create($otpCode);
+            session()->put('email', $data['email']);
+            Mail::to($data['email'])->send(new OtpCodeEmail($data['name'], $data['password']));
+        }
+        
         return User::create($data);
+        
+
     }
 
     public function forgottenPassword($email)

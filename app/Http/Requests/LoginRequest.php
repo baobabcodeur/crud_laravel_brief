@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|min:3|max:128|email',
-            'password' => 'required|min:6|max:64'
+            'password' => 'required'//|min:6|max:64
         ];
     }
 
@@ -38,8 +38,8 @@ public function messages(): array
             'email.min' => 'L\'e-mail doit contenir au minimum 3 caractères.',
             'email.max' => 'L\'e-mail doit contenir au maximun 128 caractères.',
             'password.required' => 'Le mot de passe est requis.',
-            'password.min' => 'Le mot de passe doit contenir au minimum 6 caractère.',
-            'password.max' => 'Le mot de passe doit contenir au maximum 64 caractère.',
+            // 'password.min' => 'Le mot de passe doit contenir au minimum 6 caractère.',
+            // 'password.max' => 'Le mot de passe doit contenir au maximum 64 caractère.',
     ];
 }
 

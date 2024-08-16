@@ -17,13 +17,11 @@
 
         @if ($errors->any())
         <ul>
-            {!! implode('', $error->all('<li>:message</li>')) !!}
+            {!! implode('', $errors->all('<li>:message</li>')) !!}
         </ul>
         @endif
 
-        @if ($message = Session::get('error'))
-        <div>{{ $message }}</div> <br>
-        @endif
+       
         <div class="form-group">
             <label for="email">Email</label> <br>
             <input type="text" name="email" id="email" placeholder="Saisir l'e-mail ici ..."> <br> <br>
@@ -37,7 +35,7 @@
         </div>
 
 
-        <a href="{{ route('register') }}" >S'inscrire</a> <br> <br>
+        
 
         <button type="submit" class="btn">Soumettre</button>
     </form>

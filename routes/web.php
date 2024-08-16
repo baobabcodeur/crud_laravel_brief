@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +13,16 @@ Route::get('/', [MainController::class, 'home'])->middleware(['auth', 'verified'
 
 Route::get('/login', [MainController::class, 'index'])->name('login');
 Route::get('/logout', [MainController::class, 'update'])->name('logout');
-Route::get('/register', [MainController::class, 'register'])->name('register');
+
+
+Route::middleware(IsAdmin::class)->group(function () {
+    Route::get('/register', [MainController::class, 'register'])->name('register');
+// Route::group(['middleware' => ['auth', 'isAdmin']], function() {
+   Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+Route::resource('/users', UserController::class);
+});
+
+
 
 Route::get('/forgotten-password', function () {
 
@@ -30,6 +41,7 @@ Route::get('/otp-code', function () {
     return view('otp');
 
 })->name('otpCode');
+
 
 Route::get('/new-password', function () {
 
